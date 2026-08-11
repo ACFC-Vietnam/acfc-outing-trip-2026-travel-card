@@ -1,5 +1,5 @@
 // ⬇️ REPLACE with your deployed Apps Script Web App URL (ends in /exec)
-const API_URL = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbz9jIjKssKbfad1MsY5Gsv9JAsTRCZvuD-G0VbrnmQ46SiEdURYziC7iwlB13xomuAGng/exec/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbz9jIjKssKbfad1MsY5Gsv9JAsTRCZvuD-G0VbrnmQ46SiEdURYziC7iwlB13xomuAGng/exec';
 
 const loginScreen = document.getElementById('screen-login');
 const cardScreen = document.getElementById('screen-card');
