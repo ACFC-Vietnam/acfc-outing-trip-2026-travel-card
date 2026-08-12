@@ -17,7 +17,7 @@
  */
 
 // ⚠️ Replace with your deployed Apps Script Web App URL before going live.
-const BACKEND_URL = "https://script.google.com/macros/s/AKfycbx9-Aehmrh2db0zkMLuhCr_kGOejErqm9jC8eo6cTqNXeoeGPaEApaNKF4xA1kV-YIC/exec"; // e.g. "https://script.google.com/macros/s/XXXX/exec"
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycbx9-Aehmrh2db0zkMLuhCr_kGOejErqm9jC8eo6cTqNXeoeGPaEApaNKF4xA1kV-YIC/exec";
 
 const TICKET_OFFSETS = {
   frontTop: 90, // px — resting position of the fully-visible card
@@ -353,17 +353,11 @@ function renderMobileCard(vm) {
 
   root.innerHTML = `
     <div class="mobile-card__hero">
-      <h1>TRAVEL CARD</h1>
-      <div class="route-diagram">
-        <div class="node"><h2>${event.originCode}</h2><p>THE BEST PLACE<br/>TO WORK</p></div>
-        <span class="bus-icon">🚌</span>
-        <div class="route-line"></div>
-        <div class="node"><h2>${event.destinationCode}</h2><p>A FANTASTIC<br/>DESTINATION</p></div>
-      </div>
+      <img class="hero-image" src="assets/mobile-travelcard-header.png" alt="Travel Card — ${event.originCode} to ${event.destinationCode}" />
     </div>
     ${flightBlock}
     ${busBlock}
     ${roomBlock}
-    <div class="faq-tab">FAQ</div>
+    <a class="faq-tab" href="https://docs.google.com/spreadsheets/d/1LCphezgMnkgBXstGCPjkuiN5su83opC6Zyluv0twBeA/edit?gid=0#gid=0" target="_blank" rel="noopener" aria-label="FAQ — opens in a new tab"></a>
   `;
 }
