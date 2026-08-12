@@ -16,17 +16,20 @@
 
   <div class="login-shell">
     <div class="login-hero">
-      <h1>TRAVEL CARD</h1>
-      <div class="route-diagram">
-        <div class="node">
-          <h2 id="origin-code">ACFC</h2>
-          <p>THE BEST PLACE<br />TO WORK</p>
-        </div>
-        <span class="bus-icon">🚌</span>
-        <div class="route-line"></div>
-        <div class="node">
-          <h2 id="destination-code">LH</h2>
-          <p>A FANTASTIC<br />DESTINATION</p>
+      <img class="hero-image only-mobile" src="assets/mobile-travelcard-header.png" alt="Travel Card — ACFC to LH" />
+      <div class="only-desktop">
+        <h1>TRAVEL CARD</h1>
+        <div class="route-diagram">
+          <div class="node">
+            <h2 id="origin-code">ACFC</h2>
+            <p>THE BEST PLACE<br />TO WORK</p>
+          </div>
+          <span class="bus-icon">🚌</span>
+          <div class="route-line"></div>
+          <div class="node">
+            <h2 id="destination-code">LH</h2>
+            <p>A FANTASTIC<br />DESTINATION</p>
+          </div>
         </div>
       </div>
     </div>
@@ -52,7 +55,7 @@
       <button type="submit" class="cta-button" id="submit-btn">Check Travel Card</button>
     </form>
 
-    <div class="faq-tab">FAQ</div>
+    <a class="faq-tab" href="https://docs.google.com/spreadsheets/d/1LCphezgMnkgBXstGCPjkuiN5su83opC6Zyluv0twBeA/edit?gid=0#gid=0" target="_blank" rel="noopener" aria-label="FAQ — opens in a new tab"></a>
   </div>
 
   <p class="footer-note">© 2026 ACFC<br />All right reserved</p>
@@ -77,146 +80,5 @@
 
 <script src="js/mock-data.js"></script>
 <script src="js/script.js"></script>
-</body>
-</html>
-            <strong>LH</strong>
-            <small>A FANTASTIC<br>DESTINATION</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="ticket-notch ticket-notch--left"></div>
-      <div class="ticket-notch ticket-notch--right"></div>
-
-      <div class="ticket-bottom">
-        <p class="privacy-note">
-          To ensure privacy, you are required to fill in your credentials before viewing the travel card details.
-        </p>
-
-        <form id="login-form">
-          <label for="email">Your Email</label>
-          <input type="email" id="email" placeholder="abc@acfc.com.vn" required>
-
-          <label for="code">Your Employee Code</label>
-          <input type="text" id="code" placeholder="012345" required>
-
-          <p id="error-msg" class="error-msg" hidden></p>
-
-          <button type="submit" id="submit-btn">Check Travel Card</button>
-        </form>
-      </div>
-
-      <div class="ticket-tab">FAQ</div>
-    </div>
-
-    <footer class="site-footer">© 2026 ACFC<br>All right reserved</footer>
-  </section>
-
-  <!-- ===================== CARD SCREEN ===================== -->
-  <section id="screen-card" class="screen">
-    <header class="site-header">
-      <span class="logo-acfc">ACFC</span>
-      <span class="logo-divider"></span>
-      <span class="logo-trip">Outing Trip<br>2026</span>
-    </header>
-
-    <div class="card card--ticket">
-      <div class="ticket-top">
-        <h1 class="ticket-title">TRAVEL CARD</h1>
-        <div class="route">
-          <div class="route-stop">
-            <span class="dot"></span>
-            <strong>ACFC</strong>
-            <small>THE BEST PLACE<br>TO WORK</small>
-          </div>
-          <div class="route-line">
-            <span class="bus-icon">🚌</span>
-          </div>
-          <div class="route-stop">
-            <span class="dot"></span>
-            <strong>LH</strong>
-            <small>A FANTASTIC<br>DESTINATION</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="ticket-notch ticket-notch--left"></div>
-      <div class="ticket-notch ticket-notch--right"></div>
-
-      <div class="ticket-bottom ticket-bottom--details">
-
-        <div class="field-block">
-          <span class="field-label">Passenger</span>
-          <span class="field-value field-value--big" id="out-name">—</span>
-        </div>
-
-        <!-- Flight / gather info is the same for everyone — edit these directly -->
-        <div class="section-title">Flight Information</div>
-        <div class="row-3">
-          <div><span class="field-label">Depart</span><span class="field-value">VN000</span></div>
-          <div><span class="field-label">Flight Date</span><span class="field-value">XX AUG 26</span></div>
-          <div><span class="field-label">Time</span><span class="field-value">06:30 AM</span></div>
-        </div>
-        <div class="row-3">
-          <div><span class="field-label">Return</span><span class="field-value">VN000</span></div>
-          <div><span class="field-label">Flight Date</span><span class="field-value">17 AUG 26</span></div>
-          <div><span class="field-label">Time</span><span class="field-value">06:30 PM</span></div>
-        </div>
-
-        <div class="section-title">Gather Information</div>
-        <div class="row-2">
-          <div><span class="field-label">Gather At</span><span class="field-value">SALA</span></div>
-          <div><span class="field-label">Date</span><span class="field-value">SUN, 16 AUG 26</span></div>
-        </div>
-        <div class="row-2">
-          <div><span class="field-label">Address</span><span class="field-value">XX Nguyễn Cơ Thạch, An Khánh Ward, HCMC</span></div>
-          <div><span class="field-label">Time</span><span class="field-value">09:00 AM</span></div>
-        </div>
-
-        <hr class="divider">
-
-        <div class="section-title">Bus Information</div>
-        <div class="field-block">
-          <span class="field-label">Depart Bus No.</span>
-          <span class="field-value field-value--accent" id="out-bus-number">—</span>
-        </div>
-        <div class="field-block">
-          <span class="field-label">Bus Leader</span>
-          <span class="field-value" id="out-bus-leader">—</span>
-        </div>
-        <div class="field-block">
-          <span class="field-label">Bus Leader Contact</span>
-          <span class="field-value" id="out-bus-leader-phone">—</span>
-        </div>
-        <p class="note-inline">Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
-
-        <hr class="divider">
-
-        <div class="section-title">Room Information</div>
-        <div class="field-block">
-          <span class="field-label">Room Type</span>
-          <span class="field-value" id="out-room-type">—</span>
-        </div>
-        <div class="field-block">
-          <span class="field-label">Roommate</span>
-          <span class="field-value" id="out-roommate">—</span>
-        </div>
-        <div class="field-block">
-          <span class="field-label">Roommate Contact</span>
-          <span class="field-value" id="out-roommate-phone">—</span>
-        </div>
-
-        <button type="button" id="back-btn" class="back-btn">← Back to search</button>
-      </div>
-
-      <div class="ticket-tab">FAQ</div>
-    </div>
-
-    <footer class="site-footer">© 2026 ACFC<br>All right reserved</footer>
-  </section>
-
-</div>
-
-<script src="app.js"></script>
 </body>
 </html>
