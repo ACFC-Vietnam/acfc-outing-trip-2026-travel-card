@@ -17,7 +17,7 @@
  */
 
 // ⚠️ Replace with your deployed Apps Script Web App URL before going live.
-const BACKEND_URL = ""; // e.g. "https://script.google.com/macros/s/XXXX/exec"
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycbx9-Aehmrh2db0zkMLuhCr_kGOejErqm9jC8eo6cTqNXeoeGPaEApaNKF4xA1kV-YIC/exec"; // e.g. "https://script.google.com/macros/s/XXXX/exec"
 
 const TICKET_OFFSETS = {
   frontTop: 90, // px — resting position of the fully-visible card
