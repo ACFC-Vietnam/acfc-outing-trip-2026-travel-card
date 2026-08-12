@@ -1,39 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ACFC Outing Trip 2026 — Travel Card</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="page">
+<!-- ============================= LOGIN SCREEN ============================= -->
+<section id="screen-login" class="screen is-active page">
+  <header class="site-header">
+    <img src="assets/logo.svg" alt="ACFC Outing Trip 2026" onerror="this.style.display='none'" />
+  </header>
 
-  <!-- ===================== LOGIN SCREEN ===================== -->
-  <section id="screen-login" class="screen screen--active">
-    <header class="site-header">
-      <span class="logo-acfc">ACFC</span>
-      <span class="logo-divider"></span>
-      <span class="logo-trip">Outing Trip<br>2026</span>
-    </header>
+  <div class="login-shell">
+    <div class="login-hero">
+      <h1>TRAVEL CARD</h1>
+      <div class="route-diagram">
+        <div class="node">
+          <h2 id="origin-code">ACFC</h2>
+          <p>THE BEST PLACE<br />TO WORK</p>
+        </div>
+        <span class="bus-icon">🚌</span>
+        <div class="route-line"></div>
+        <div class="node">
+          <h2 id="destination-code">LH</h2>
+          <p>A FANTASTIC<br />DESTINATION</p>
+        </div>
+      </div>
+    </div>
 
-    <div class="card card--ticket">
-      <div class="ticket-top">
-        <h1 class="ticket-title">TRAVEL CARD</h1>
-        <div class="route">
-          <div class="route-stop">
-            <span class="dot"></span>
-            <strong>ACFC</strong>
-            <small>THE BEST PLACE<br>TO WORK</small>
-          </div>
-          <div class="route-line">
-            <span class="bus-icon">🚌</span>
-          </div>
-          <div class="route-stop">
-            <span class="dot"></span>
+    <form class="login-form" id="login-form" novalidate>
+      <p class="intro">
+        TO ENSURE PRIVACY, YOU ARE REQUIRED TO FILL IN YOUR CREDENTIALS
+        BEFORE VIEWING THE TRAVEL CARD DETAILS.
+      </p>
+
+      <div class="field" id="field-email">
+        <label for="input-email">YOUR EMAIL</label>
+        <input type="email" id="input-email" placeholder="abc@acfc.com.vn" autocomplete="email" />
+        <p class="error">We couldn't match that email. Double check and try again.</p>
+      </div>
+
+      <div class="field" id="field-code">
+        <label for="input-code">YOUR EMPLOYEE CODE</label>
+        <input type="text" id="input-code" placeholder="012345" inputmode="numeric" autocomplete="off" />
+        <p class="error">That code doesn't match the email above.</p>
+      </div>
+
+      <button type="submit" class="cta-button" id="submit-btn">Check Travel Card</button>
+    </form>
+
+    <div class="faq-tab">FAQ</div>
+  </div>
+
+  <p class="footer-note">© 2026 ACFC<br />All right reserved</p>
+</section>
+
+<!-- ============================= CARD SCREEN =============================== -->
+<section id="screen-card" class="screen page">
+  <header class="site-header">
+    <img src="assets/logo.svg" alt="ACFC Outing Trip 2026" onerror="this.style.display='none'" />
+  </header>
+
+  <!-- Desktop: dual layered ticket with hover-pop + click-to-swap -->
+  <div class="card-stage only-desktop">
+    <div class="ticket-deck" id="ticket-deck"><!-- rendered by script.js --></div>
+  </div>
+
+  <!-- Mobile: single consolidated scrolling card -->
+  <div class="mobile-card only-mobile" id="mobile-card"><!-- rendered by script.js --></div>
+
+  <p class="footer-note">© 2026 ACFC<br />All right reserved</p>
+</section>
+
+<script src="js/mock-data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
             <strong>LH</strong>
             <small>A FANTASTIC<br>DESTINATION</small>
           </div>
