@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Design tokens — sourced from Mini_site_font_and_element_guide.docx
+   Glow Better swapped for Fraunces (free, OFL, Google Fonts) — see README.
+   ========================================================================== */
+
+:root {
+  /* Colors */
+  --color-ink: #581515;          /* static remark text + info-text default */
+  --color-accent: #9f0000;       /* dynamic data values (per mockups: applied broadly) */
+  --color-white: #ffffff;
+  --color-cta: #a81d1d;
+  --color-cta-hover: #d94747;
+  --color-cta-active: #880000;
+  --color-form-stroke: #909090;
+  --color-mobile-flap-1: #e8ecf1;
+  --color-mobile-flap-2: #f1f0e8;
+  --color-dash: #767676;
+
+  /* Type */
+  --font-display: "Fraunces", "Roboto Flex", serif; /* stand-in for Glow Better */
+  --font-body: "Roboto Flex", sans-serif;
+
+  /* Info text (desktop / mobile) */
+  --fs-info-desktop: 24px;
+  --fs-info-mobile: 20px;
+  --fw-info: 660;
+
+  /* Static remark text */
+  --fs-remark-desktop: 16px;
+  --fs-remark-mobile: 14px;
+  --fw-remark: 330;
+
+  /* CTA */
+  --fs-cta-desktop: 24px;
+  --fs-cta-mobile: 20px;
+  --fw-cta: 500;
+
+  /* Headings */
+  --fs-h1-desktop: 70px;
+  --fs-h1-mobile: 52px;
+  --fs-h2-mobile: 40px;
+  --fs-h3-desktop: 64px;
+  --fs-h3-mobile: 28px;
+
+  /* Elements */
+  --radius-form-desktop: 8px;
+  --radius-form-mobile: 4px;
+  --radius-mobile-card: 60px;
+
+  /* Desktop spacing */
+  --space-group-desktop: 20px;
+  --space-flight-right-flap-desktop: 38px;
+
+  /* Mobile spacing */
+  --space-mobile-combo-item: 12px;
+  --space-mobile-combo: 16px;
+  --space-mobile-frame-padding: 32px;
+  --space-mobile-last-flap-bottom: 60px;
+}
+
+/* Variable-font axes for Roboto Flex, per guide:
+   Slant 0, Width 85/90, Weight 330/500/660, Grad 34, Optical Size 17,
+   Xopq 111, Yopq 92, Xtra 492 */
+.fx-info {
+  font-variation-settings: "slnt" 0, "wdth" 85, "wght" 660, "GRAD" 34,
+    "opsz" 17, "XOPQ" 111, "YOPQ" 92, "XTRA" 492;
+}
+.fx-remark {
+  font-variation-settings: "slnt" 0, "wdth" 90, "wght" 330, "GRAD" 34,
+    "opsz" 17, "XOPQ" 111, "YOPQ" 92, "XTRA" 492;
+}
+.fx-cta {
+  font-variation-settings: "slnt" 0, "wdth" 90, "wght" 500, "GRAD" 34,
+    "opsz" 17, "XOPQ" 111, "YOPQ" 92, "XTRA" 492;
+}
