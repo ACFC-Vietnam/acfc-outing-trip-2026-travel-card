@@ -334,7 +334,7 @@ function renderMobileCard(vm) {
       <hr class="m-divider-solid" />
       <p class="m-section-title">Gather information</p>
       <div class="m-two-col">
-        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile", "dash")}</div>
+        <div>${infoItem("Gather At", `${event.gather.address}`, "mobile", "dash")}</div>
         <div>${infoItem("Date", event.gather.dateLabel, "mobile", "dash")}</div>
       </div>
       ${infoItem("Time", event.gather.time, "mobile", "dash")}
@@ -352,7 +352,7 @@ function renderMobileCard(vm) {
       ${infoItem("Bus Leader", bus.departLeaderName, "mobile", "dash")}
       ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "mobile", "dash")}
       ${infoItem("Class", bus.busClass, "mobile", "dash")}
-      <p style="font-size:12px;">Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
+      <p style="font-size:12px;">Please show up at least 15 minutes before Departure Time. Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
       <hr class="m-divider-dash" />
       <div class="m-two-col">
         <div>${infoItem("Return Bus No.", bus.returnNo, "mobile", "dash")}</div>
