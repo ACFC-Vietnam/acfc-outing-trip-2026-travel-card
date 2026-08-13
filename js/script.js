@@ -144,9 +144,6 @@ function travelCardMarkup(vm) {
         <div class="note-box">
           <p>Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
         </div>
-        <div class="note-box">
-          <p>Please show up at least 15 minutes before Departure Time.</p>
-        </div>
       </div>
       <div class="info-col">
         ${infoItem("Depart Bus No.", bus.departNo, "desktop", d)}
@@ -163,6 +160,9 @@ function travelCardMarkup(vm) {
         ${infoItem("Gather Time", vm.event.returnGatherTime, "desktop", d)}
         ${infoItem("Bus Leader", bus.returnLeaderName, "desktop", d)}
         ${infoItem("Bus Leader Contact", bus.returnLeaderPhone, "desktop", d)}
+      </div>
+      <div class="note-box note-box--span">
+        <p>Please show up at least 15 minutes before Departure Time.</p>
       </div>
       <div class="info-col info-col--room">
         <p class="section-title">Room information</p>
