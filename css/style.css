@@ -221,7 +221,7 @@ img { max-width: 100%; display: block; }
    DESKTOP CARD SCREEN — dual layered ticket + hover/click swap
    ========================================================================== */
 .card-stage {
-  max-width: 1100px;
+  max-width: 1220px;
   margin: 0 auto;
   position: relative;
 }
@@ -256,9 +256,11 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 40px;
+  padding: 20px 40px;
   background: linear-gradient(120deg, #a1401f, #c96a2e 45%, #7a2418);
   background-size: cover;
+  position: relative;
+  z-index: 1;
 }
 .ticket-band.flight { background: linear-gradient(120deg, #d99a1e, #e8b94a 45%, #b97f16); }
 .ticket-band .band-logo { height: 28px; width: auto; }
@@ -271,35 +273,57 @@ img { max-width: 100%; display: block; }
   flex: 1;
 }
 
+.ticket-footer {
+  padding: 14px 40px;
+  text-align: center;
+  background: linear-gradient(120deg, #a1401f, #c96a2e 45%, #7a2418);
+  font-family: var(--font-display);
+  font-weight: 900;
+  color: var(--color-white);
+  font-size: 22px;
+  letter-spacing: 0.03em;
+}
+.ticket-footer.flight { background: linear-gradient(120deg, #d99a1e, #e8b94a 45%, #b97f16); }
+
 .ticket-body {
   display: grid;
-  grid-template-columns: 1fr 1fr 320px;
-  gap: 0 32px;
-  padding: 32px 40px;
+  grid-template-columns: 1fr 1.15fr 300px;
+  gap: 0 24px;
+  padding: 28px 36px;
   position: relative;
 }
-.ticket-body::before {
-  content: "";
+/* Dashed divider spans the FULL card height (through header + footer),
+   not just the body, so the room-info column reads as its own attached
+   flap rather than a plain third grid column. */
+.ticket-flap-divider {
   position: absolute;
-  top: 0; bottom: 0;
-  right: 320px;
-  border-left: 1px dashed #d8cfcf;
+  top: 0;
+  bottom: 0;
+  right: 300px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.6);
+  z-index: 2;
+  pointer-events: none;
 }
-.info-col { display: flex; flex-direction: column; gap: var(--space-group-desktop); }
-.info-row { display: flex; gap: 32px; }
+.info-col { display: flex; flex-direction: column; gap: 16px; }
+.info-row { display: flex; gap: 20px; }
+.info-item { min-width: 0; }
 .info-item .label {
-  font-size: var(--fs-remark-desktop);
+  font-size: 14px;
   font-variation-settings: "wght" 330;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   color: var(--color-ink);
-  margin: 0 0 4px;
+  margin: 0 0 3px;
+  white-space: nowrap;
+  text-align: left;
 }
 .info-item .value {
   font-size: var(--fs-info-desktop);
   font-variation-settings: "wght" 660;
   color: var(--color-accent);
   margin: 0;
+  white-space: nowrap;
+  text-align: left;
 }
 .section-title {
   font-size: 15px;
@@ -320,9 +344,10 @@ img { max-width: 100%; display: block; }
   line-height: 1.5;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1180px) {
   .ticket-body { grid-template-columns: 1fr 1fr; }
-  .ticket-body::before { display: none; }
+  .ticket-flap-divider, .ticket-flap-divider-body { display: none; }
+  .info-item .label, .info-item .value { white-space: normal; }
 }
 
 /* ==========================================================================
