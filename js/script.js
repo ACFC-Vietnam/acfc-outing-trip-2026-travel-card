@@ -17,7 +17,7 @@
  */
 
 // ⚠️ Replace with your deployed Apps Script Web App URL before going live.
-const BACKEND_URL = "https://script.google.com/macros/s/AKfycbyl0rbz0d8NWGyY7COAWS01QcFbe6XGODvQPO4XCgLA7coaniK5Ghplfr7r-VcejIodTg/exec";
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzhjhDmpog6o1bGU7xrPe1sObEek3IgYUaIjtaTJ4sHN354wLDzAiaFLnSmtLGWieSEQg/exec"; // e.g. "https://script.google.com/macros/s/XXXX/exec"
 
 const TICKET_OFFSETS = {
   frontTop: 90, // px — resting position of the fully-visible card
@@ -142,8 +142,10 @@ function travelCardMarkup(vm) {
         ${infoItem("Name", name, "desktop", d)}
         ${infoItem("From", bus.from, "desktop", d)}
         <div class="note-box">
-          <p>Please show up at least 15 minutes before Departure Time.</p>
           <p>Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
+        </div>
+        <div class="note-box">
+          <p>Please show up at least 15 minutes before Departure Time.</p>
         </div>
       </div>
       <div class="info-col">
