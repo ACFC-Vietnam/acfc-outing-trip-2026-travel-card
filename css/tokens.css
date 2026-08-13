@@ -21,8 +21,8 @@
   --font-body: "Roboto Flex", sans-serif;
 
   /* Info text (desktop / mobile) */
-  --fs-info-desktop: 24px;
-  --fs-info-mobile: 20px;
+  --fs-info-desktop: 22px;
+  --fs-info-mobile: 18px;
   --fw-info: 660;
 
   /* Static remark text */
