@@ -60,11 +60,9 @@ function cleanRoommate(name, phone) {
   return { name: name.trim(), phone: (phone || "").trim() || null };
 }
 
-// Static, event-wide info that is the same for every guest and is NOT
-// pulled from the sheet (there's no per-row column for it):
-//   - depart date (everyone leaves 16 Aug 2026)
-//   - gather location / address
-// Confirm with Luan these truly are constant before hardcoding for real.
+// Static, event-wide defaults. `gather.address` is now overridden per-row
+// from column C of the MASTER FILE (see toCardViewModel below) — this
+// stays only as the fallback when that cell is empty.
 const EVENT_CONFIG = {
   departDateLabel: "16 AUG",
   gather: {
@@ -73,6 +71,10 @@ const EVENT_CONFIG = {
     dateLabel: "SUN, 16 AUG 26",
     time: "09:00 AM",
   },
+  // Static event-wide fields with no per-row sheet column — same for
+  // flightClass is static for every guest. Bus FROM/TO/CLASS/DROP OFF
+  // are now computed per-row by deriveBusLabels() below.
+  flightClass: "ECONOMY",
   destinationCode: "LH", // shown as the H2 on the mobile route diagram
   originCode: "ACFC",
 };
@@ -85,6 +87,7 @@ const MOCK_ROWS = [
     employeeCode: "009825",
     email: "dong.nguyenducthuyrang@acfc.com.vn",
     phone: "0708349858",
+    gatherLocation: "", // empty -> falls back to EVENT_CONFIG default
     departBusNo: "SG2",
     departSeat: "4",
     departBusLeader: "TRẦN VĂN THÌN",
@@ -103,7 +106,6 @@ const MOCK_ROWS = [
     // No flight columns filled for this guest in the live sheet today —
     // the flight ticket must NOT render for her (unlike the design mockups).
     bookingNumber: "",
-    ticketNumber: "",
     departFlightNo: "",
     departFlightDate: "",
     departFlightTime: "",
@@ -123,6 +125,7 @@ const MOCK_ROWS = [
     employeeCode: "022861",
     email: "mai.nguyenthithanh@acfc.com.vn",
     phone: "0936612889",
+    gatherLocation: "Sala Quận 2 — Giao giữa đường Hoàng Thế Thiện và D6",
     departBusNo: "HAN",
     departSeat: "1",
     departBusLeader: "TRẦN THỊ THU HƯƠNG",
@@ -139,19 +142,104 @@ const MOCK_ROWS = [
     roommate2Name: "— (về 17/8)", // sentinel -> hide 2nd-night block
     roommate2Phone: "",
     bookingNumber: "DMQHZO",
-    ticketNumber: "738-2422499501",
     departFlightNo: "VN207",
     departFlightDate: "15/08/2026",
-    departFlightTime: "07:00 am",
+    departFlightTime: "07:00 AM",
     departFrom: "HÀ NỘI",
     departTo: "TP. HỒ CHÍ MINH",
     returnFlightNo: "VN258",
     returnFlightDate: "17/08/2026",
-    returnFlightTime: "19:00",
+    returnFlightTime: "07:00 PM",
     returnFrom: "TP. HỒ CHÍ MINH",
     returnTo: "HÀ NỘI",
   },
+  {
+    // Personal-car test case — no flight, no BID/HAN — checks the
+    // "Personal Car" CLASS override.
+    stt: 55,
+    name: "TRẦN VĂN ĐẠT",
+    employeeCode: "004512",
+    email: "dat.tranvan@acfc.com.vn",
+    phone: "0912345678",
+    gatherLocation: "",
+    departBusNo: "Personal Car",
+    departSeat: "",
+    departBusLeader: "",
+    departBusLeaderPhone: "",
+    returnDate: "16/8",
+    returnBusNo: "Personal Car",
+    returnSeat: "",
+    returnBusLeader: "",
+    returnBusLeaderPhone: "",
+    roomCode: "12",
+    roomType: "Deluxe (twin)",
+    roommate1Name: "PHẠM QUỐC HUY",
+    roommate1Phone: "0909112233",
+    roommate2Name: "PHẠM QUỐC HUY",
+    roommate2Phone: "0909112233",
+    bookingNumber: "",
+    departFlightNo: "",
+    departFlightDate: "",
+    departFlightTime: "",
+    departFrom: "",
+    departTo: "",
+    returnFlightNo: "",
+    returnFlightDate: "",
+    returnFlightTime: "",
+    returnFrom: "",
+    returnTo: "",
+  },
 ];
+
+/**
+ * Derived/business-logic fields with no direct sheet column.
+ * FROM: if flying, use the flight's depart city. Otherwise BID bus ->
+ *       Bình Dương, everything else -> Ho Chi Minh City.
+ * TO:   always "VIENNA HOUSE" (static).
+ * CLASS: "HAPPY BUS" normally; "PERSONAL CAR" for the 2 riders whose
+ *        bus no. is literally marked "Personal Car" in the sheet.
+ * DROP OFF AT: keyed off the RETURN bus number — HAN -> TSN Airport,
+ *        BID -> Bình Dương, everything else -> Ho Chi Minh City.
+ */
+function deriveBusLabels(departBusNo, returnBusNo, hasFlight, flightDepartFrom) {
+  const from = hasFlight
+    ? flightDepartFrom || null
+    : departBusNo === "BID"
+    ? "BÌNH DƯƠNG"
+    : "HO CHI MINH CITY";
+
+  const to = "VIENNA HOUSE";
+
+  const isPersonalCar =
+    (departBusNo || "").toLowerCase() === "personal car" ||
+    (returnBusNo || "").toLowerCase() === "personal car";
+  const busClass = isPersonalCar ? "PERSONAL CAR" : "HAPPY BUS";
+
+  const dropOffAt =
+    returnBusNo === "HAN"
+      ? "TSN AIRPORT"
+      : returnBusNo === "BID"
+      ? "BÌNH DƯƠNG"
+      : "HO CHI MINH CITY";
+
+  return { from, to, busClass, dropOffAt };
+}
+
+/** Format like "16 AUG" from a "dd/MM/yyyy" or already-formatted string. */
+function formatFlightDate(raw) {
+  if (!raw) return null;
+  // Accepts "15/08/2026" style input from the mock rows.
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(raw.trim());
+  if (!m) return raw; // already formatted / unrecognized — pass through
+  const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  return `${parseInt(m[1], 10)} ${months[parseInt(m[2], 10) - 1]}`;
+}
+
+/** Format like "07:00AM" (no space) from "07:00 AM" style input. */
+function formatFlightTime(raw) {
+  if (!raw) return null;
+  return raw.trim().replace(/\s+/g, "").toUpperCase();
+}
 
 /**
  * Shapes a raw row into the view-model the renderer expects,
@@ -165,6 +253,12 @@ function toCardViewModel(row) {
     roommate2 && (!roommate1 || roommate2.name !== roommate1.name);
 
   const hasFlight = Boolean(row.bookingNumber && row.bookingNumber.trim());
+  const busLabels = deriveBusLabels(
+    row.departBusNo,
+    row.returnBusNo,
+    hasFlight,
+    row.departFrom
+  );
 
   return {
     name: row.name || null,
@@ -179,9 +273,15 @@ function toCardViewModel(row) {
       returnSeat: row.returnSeat || null,
       returnLeaderName: row.returnBusLeader || null,
       returnLeaderPhone: row.returnBusLeaderPhone || null,
+      from: busLabels.from,
+      to: busLabels.to,
+      busClass: busLabels.busClass,
+      dropOffAt: busLabels.dropOffAt,
     },
     room: {
-      code: row.roomCode || null,
+      // NOTE: using column P for room type per your latest instruction —
+      // this used to be column Q (P was "room code"). Flagging in case
+      // that wasn't intentional; room code (old P) is no longer read.
       type: row.roomType || null,
       roommate1,
       roommate2: showRoommate2 ? roommate2 : null,
@@ -189,24 +289,27 @@ function toCardViewModel(row) {
     flight: hasFlight
       ? {
           bookingNumber: row.bookingNumber,
-          ticketNumber: row.ticketNumber || null,
           depart: {
             flightNo: row.departFlightNo || null,
-            date: row.departFlightDate || null,
-            time: row.departFlightTime || null,
+            date: formatFlightDate(row.departFlightDate),
+            time: formatFlightTime(row.departFlightTime),
             from: row.departFrom || null,
             to: row.departTo || null,
           },
           return: {
             flightNo: row.returnFlightNo || null,
-            date: row.returnFlightDate || null,
-            time: row.returnFlightTime || null,
+            date: formatFlightDate(row.returnFlightDate),
+            time: formatFlightTime(row.returnFlightTime),
             from: row.returnFrom || null,
             to: row.returnTo || null,
           },
         }
       : null,
-    event: EVENT_CONFIG,
+    event: Object.assign({}, EVENT_CONFIG, {
+      gather: Object.assign({}, EVENT_CONFIG.gather, {
+        address: row.gatherLocation || EVENT_CONFIG.gather.address,
+      }),
+    }),
   };
 }
 
