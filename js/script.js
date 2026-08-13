@@ -118,9 +118,9 @@ function travelCardMarkup(vm) {
   const { bus, room, name, employeeCode } = vm;
   return `
     <div class="ticket-band">
-      <span class="wordmark">ACFC</span>
+      <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
       <span class="title">TRAVEL CARD</span>
-      <span class="wordmark">ACFC</span>
+      <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
     </div>
     <div class="ticket-body">
       <div class="info-col">
@@ -173,9 +173,9 @@ function flightTicketMarkup(vm) {
   const r = flight.return;
   return `
     <div class="ticket-band flight">
-      <span class="carrier-logo">✈ Vietnam Airlines</span>
+      <img class="band-logo" src="assets/surface1.svg" alt="Vietnam Airlines" />
       <span class="title">FLIGHT TICKET</span>
-      <span class="carrier-logo">✈ Vietnam Airlines</span>
+      <img class="band-logo" src="assets/surface1.svg" alt="Vietnam Airlines" />
     </div>
     <div class="ticket-body">
       <div class="info-col">
@@ -193,7 +193,6 @@ function flightTicketMarkup(vm) {
       <div class="info-col">
         ${infoItem("Name", name)}
         ${infoItem("Booking Number", flight.bookingNumber)}
-        ${infoItem("Ticket Number", flight.ticketNumber)}
       </div>
       <div class="note-box">Please show up at least 2 hours before flight time for check-in and baggage drop.</div>
     </div>
@@ -353,7 +352,13 @@ function renderMobileCard(vm) {
 
   root.innerHTML = `
     <div class="mobile-card__hero">
-      <img class="hero-image" src="assets/mobile-travelcard-header.png" alt="Travel Card — ${event.originCode} to ${event.destinationCode}" />
+      <h1>TRAVEL CARD</h1>
+      <div class="route-diagram">
+        <div class="node"><h2>${event.originCode}</h2><p>THE BEST PLACE<br/>TO WORK</p></div>
+        <span class="bus-icon">🚌</span>
+        <div class="route-line"></div>
+        <div class="node"><h2>${event.destinationCode}</h2><p>A FANTASTIC<br/>DESTINATION</p></div>
+      </div>
     </div>
     ${flightBlock}
     ${busBlock}
