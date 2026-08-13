@@ -135,33 +135,35 @@ function travelCardMarkup(vm) {
       <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
     </div>
     <div class="ticket-flap-divider"></div>
-    <div class="ticket-body">
+    <div class="ticket-body ticket-body--travel">
       <div class="info-col">
         <p class="section-title">Bus information</p>
         ${infoItem("Carrier", "ACFC Outing Trip 2026", "desktop", d)}
         ${infoItem("Name", name, "desktop", d)}
         ${infoItem("From", bus.from, "desktop", d)}
-        ${infoItem("To", bus.to, "desktop", d)}
       </div>
       <div class="info-col">
         <div class="info-row">
           ${infoItem("Depart Bus No.", bus.departNo, "desktop", d)}
-          ${infoItem("Date", vm.event.departDateLabel, "desktop", d)}
-          ${infoItem("Return Bus No.", bus.returnNo, "desktop", d)}
+          ${infoItem("Seat No.", bus.departSeat, "desktop", d)}
         </div>
         <div class="info-row">
-          ${infoItem("Seat No.", bus.departSeat, "desktop", d)}
+          ${infoItem("Depart Date", vm.event.departDateLabel, "desktop", d)}
           ${infoItem("Depart Time", vm.event.gather.time, "desktop", d)}
+        </div>
+      </div>
+      <div class="info-col">
+        <div class="info-row">
+          ${infoItem("Return Bus No.", bus.returnNo, "desktop", d)}
           ${infoItem("Seat No.", bus.returnSeat, "desktop", d)}
         </div>
         <div class="info-row">
-          ${infoItem("Gather At", vm.event.gather.at, "desktop", d)}
-          ${infoItem("Class", bus.busClass, "desktop", d)}
-          ${infoItem("Drop Off At", bus.dropOffAt, "desktop", d)}
+          ${infoItem("Return Date", bus.returnDateLabel, "desktop", d)}
+          ${infoItem("Gather Time", vm.event.returnGatherTime, "desktop", d)}
         </div>
-        <div class="note-box">Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
       </div>
-      <div class="info-col">
+      <div class="note-box">Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
+      <div class="info-col info-col--room">
         <p class="section-title">Room information</p>
         ${infoItem("Room Type", room.type, "desktop", d)}
         ${infoItem("Roommate", room.roommate1 ? room.roommate1.name : null, "desktop", d)}
@@ -399,4 +401,3 @@ function renderMobileCard(vm) {
     <a class="faq-tab" href="https://docs.google.com/spreadsheets/d/1LCphezgMnkgBXstGCPjkuiN5su83opC6Zyluv0twBeA/edit?gid=0#gid=0" target="_blank" rel="noopener" aria-label="FAQ — opens in a new tab"></a>
   `;
 }
-
