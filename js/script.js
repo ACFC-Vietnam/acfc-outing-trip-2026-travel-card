@@ -17,7 +17,7 @@
  */
 
 // ⚠️ Replace with your deployed Apps Script Web App URL before going live.
-const BACKEND_URL = "https://script.google.com/macros/s/AKfycbx9-Aehmrh2db0zkMLuhCr_kGOejErqm9jC8eo6cTqNXeoeGPaEApaNKF4xA1kV-YIC/exec";
+const BACKEND_URL = ""; // e.g. "https://script.google.com/macros/s/XXXX/exec"
 
 const TICKET_OFFSETS = {
   frontTop: 90, // px — resting position of the fully-visible card
@@ -134,6 +134,7 @@ function travelCardMarkup(vm) {
       <span class="title">TRAVEL CARD</span>
       <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
     </div>
+    <div class="ticket-flap-divider"></div>
     <div class="ticket-body">
       <div class="info-col">
         <p class="section-title">Bus information</p>
@@ -173,6 +174,7 @@ function travelCardMarkup(vm) {
         }
       </div>
     </div>
+    <div class="ticket-footer">ACFC OUTING TRIP 2026</div>
   `;
 }
 
@@ -187,6 +189,7 @@ function flightTicketMarkup(vm) {
       <span class="title">FLIGHT TICKET</span>
       <img class="band-logo" src="assets/surface1.svg" alt="Vietnam Airlines" />
     </div>
+    <div class="ticket-flap-divider"></div>
     <div class="ticket-body">
       <div class="info-col">
         <p class="section-title">Departure</p>
@@ -208,6 +211,7 @@ function flightTicketMarkup(vm) {
       </div>
       <div class="note-box">Please show up at least 2 hours before flight time for check-in and baggage drop.</div>
     </div>
+    <div class="ticket-footer flight">ACFC OUTING TRIP 2026</div>
   `;
 }
 
@@ -395,3 +399,4 @@ function renderMobileCard(vm) {
     <a class="faq-tab" href="https://docs.google.com/spreadsheets/d/1LCphezgMnkgBXstGCPjkuiN5su83opC6Zyluv0twBeA/edit?gid=0#gid=0" target="_blank" rel="noopener" aria-label="FAQ — opens in a new tab"></a>
   `;
 }
+
