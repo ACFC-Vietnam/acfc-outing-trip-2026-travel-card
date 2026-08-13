@@ -147,7 +147,7 @@ function travelCardMarkup(vm) {
         </div>
       </div>
       <div class="info-col">
-        ${infoItem("Depart Bus No.", bus.departNo, "desktop", d)}
+        ${infoItem("Depart Bus", bus.departNo, "desktop", d)}
         ${infoItem("Seat No.", bus.departSeat, "desktop", d)}
         ${infoItem("Depart Date", vm.event.departDateLabel, "desktop", d)}
         ${infoItem("Depart Time", vm.event.gather.time, "desktop", d)}
@@ -155,7 +155,7 @@ function travelCardMarkup(vm) {
         ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "desktop", d)}
       </div>
       <div class="info-col">
-        ${infoItem("Return Bus No.", bus.returnNo, "desktop", d)}
+        ${infoItem("Return Bus", bus.returnNo, "desktop", d)}
         ${infoItem("Seat No.", bus.returnSeat, "desktop", d)}
         ${infoItem("Return Date", bus.returnDateLabel, "desktop", d)}
         ${infoItem("Gather Time", vm.event.returnGatherTime, "desktop", d)}
