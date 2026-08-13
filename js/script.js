@@ -115,7 +115,7 @@ function infoItem(label, value, size = "desktop") {
 // DESKTOP: dual layered ticket
 // ---------------------------------------------------------------
 function travelCardMarkup(vm) {
-  const { bus, room, name, employeeCode } = vm;
+  const { bus, room, name } = vm;
   return `
     <div class="ticket-band">
       <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
@@ -127,22 +127,24 @@ function travelCardMarkup(vm) {
         <p class="section-title">Bus information</p>
         ${infoItem("Carrier", "ACFC Outing Trip 2026")}
         ${infoItem("Name", name)}
-        ${infoItem("Employee Code", employeeCode)}
+        ${infoItem("From", vm.event.busFrom)}
+        ${infoItem("To", vm.event.busTo)}
       </div>
       <div class="info-col">
         <div class="info-row">
-          ${infoItem("Bus No.", bus.departNo)}
+          ${infoItem("Depart Bus No.", bus.departNo)}
           ${infoItem("Date", vm.event.departDateLabel)}
           ${infoItem("Return Bus No.", bus.returnNo)}
         </div>
         <div class="info-row">
           ${infoItem("Seat No.", bus.departSeat)}
           ${infoItem("Depart Time", vm.event.gather.time)}
-          ${infoItem("Seat No. (return)", bus.returnSeat)}
+          ${infoItem("Seat No.", bus.returnSeat)}
         </div>
         <div class="info-row">
           ${infoItem("Gather At", vm.event.gather.at)}
-          ${infoItem("Return Date", bus.returnDate)}
+          ${infoItem("Class", vm.event.busClass)}
+          ${infoItem("Drop Off At", vm.event.busTo)}
         </div>
         <div class="note-box">Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
       </div>
@@ -183,16 +185,20 @@ function flightTicketMarkup(vm) {
         <div class="info-row">${infoItem("From", d.from)}${infoItem("To", d.to)}</div>
         <div class="info-row">${infoItem("Flight No.", d.flightNo)}${infoItem("Date", d.date)}</div>
         <div class="info-row">${infoItem("Gather At", vm.event.gather.at)}${infoItem("Time", d.time)}</div>
+        <div class="info-row">${infoItem("Seat", d.seat)}${infoItem("Class", vm.event.flightClass)}</div>
       </div>
       <div class="info-col">
         <p class="section-title">Return</p>
         <div class="info-row">${infoItem("From", r.from)}${infoItem("To", r.to)}</div>
         <div class="info-row">${infoItem("Flight No.", r.flightNo)}${infoItem("Date", r.date)}</div>
-        <div class="info-row">${infoItem("Time", r.time)}</div>
+        <div class="info-row">${infoItem("Gather At", vm.event.gather.at)}${infoItem("Time", r.time)}</div>
+        <div class="info-row">${infoItem("Seat", r.seat)}${infoItem("Class", vm.event.flightClass)}</div>
       </div>
       <div class="info-col">
         ${infoItem("Name", name)}
         ${infoItem("Booking Number", flight.bookingNumber)}
+        <div class="info-row">${infoItem("Depart Flight No.", d.flightNo)}${infoItem("Depart Date", d.date)}</div>
+        <div class="info-row">${infoItem("Return Flight No.", r.flightNo)}${infoItem("Return Date", r.date)}</div>
       </div>
       <div class="note-box">Please show up at least 2 hours before flight time for check-in and baggage drop.</div>
     </div>
