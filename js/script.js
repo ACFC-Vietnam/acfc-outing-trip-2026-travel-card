@@ -154,7 +154,7 @@ function travelCardMarkup(vm) {
         ${infoItem("Return Date", bus.returnDateLabel, "desktop", d)}
         ${infoItem("Gather Time", vm.event.returnGatherTime, "desktop", d)}
       </div>
-      <div class="note-box">Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
+      <div class="note-box">Please show up at least 15 minutes before Departure Time. Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
       <div class="info-col info-col--room">
         <p class="section-title">Room information</p>
         ${infoItem("Room Type", room.type, "desktop", d)}
