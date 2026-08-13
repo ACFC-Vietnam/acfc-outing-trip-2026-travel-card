@@ -102,12 +102,23 @@ form.addEventListener("submit", async (e) => {
 // ---------------------------------------------------------------
 // Small render helpers (return "" when value is empty -> field hidden)
 // ---------------------------------------------------------------
-function infoItem(label, value, size = "desktop") {
-  if (value === null || value === undefined || value === "") return "";
+/**
+ * Renders a label/value pair. `mode` controls empty-value behavior:
+ *  - "hide" (default): empty value -> field omitted entirely. Used for
+ *    Flight Ticket fields (e.g. seat, when no data source exists).
+ *  - "dash": empty value -> renders "—" instead of omitting. Used for
+ *    everything else (Travel Card, Room Info), on both desktop and
+ *    mobile, per your instruction that only FLIGHT INFORMATION keeps
+ *    the hide-on-empty behavior.
+ */
+function infoItem(label, value, size = "desktop", mode = "hide") {
+  const isEmpty = value === null || value === undefined || value === "";
+  if (isEmpty && mode === "hide") return "";
+  const display = isEmpty ? "—" : value;
   const cls = size === "desktop" ? "info-item" : "m-block";
   return `<div class="${cls}">
     <p class="label">${label}</p>
-    <p class="value">${value}</p>
+    <p class="value">${display}</p>
   </div>`;
 }
 
@@ -116,6 +127,7 @@ function infoItem(label, value, size = "desktop") {
 // ---------------------------------------------------------------
 function travelCardMarkup(vm) {
   const { bus, room, name } = vm;
+  const d = "dash"; // shorthand for the dash-fallback mode used throughout this card
   return `
     <div class="ticket-band">
       <img class="band-logo" src="assets/company-logo.svg" alt="ACFC" />
@@ -125,42 +137,38 @@ function travelCardMarkup(vm) {
     <div class="ticket-body">
       <div class="info-col">
         <p class="section-title">Bus information</p>
-        ${infoItem("Carrier", "ACFC Outing Trip 2026")}
-        ${infoItem("Name", name)}
-        ${infoItem("From", vm.event.busFrom)}
-        ${infoItem("To", vm.event.busTo)}
+        ${infoItem("Carrier", "ACFC Outing Trip 2026", "desktop", d)}
+        ${infoItem("Name", name, "desktop", d)}
+        ${infoItem("From", bus.from, "desktop", d)}
+        ${infoItem("To", bus.to, "desktop", d)}
       </div>
       <div class="info-col">
         <div class="info-row">
-          ${infoItem("Depart Bus No.", bus.departNo)}
-          ${infoItem("Date", vm.event.departDateLabel)}
-          ${infoItem("Return Bus No.", bus.returnNo)}
+          ${infoItem("Depart Bus No.", bus.departNo, "desktop", d)}
+          ${infoItem("Date", vm.event.departDateLabel, "desktop", d)}
+          ${infoItem("Return Bus No.", bus.returnNo, "desktop", d)}
         </div>
         <div class="info-row">
-          ${infoItem("Seat No.", bus.departSeat)}
-          ${infoItem("Depart Time", vm.event.gather.time)}
-          ${infoItem("Seat No.", bus.returnSeat)}
+          ${infoItem("Seat No.", bus.departSeat, "desktop", d)}
+          ${infoItem("Depart Time", vm.event.gather.time, "desktop", d)}
+          ${infoItem("Seat No.", bus.returnSeat, "desktop", d)}
         </div>
         <div class="info-row">
-          ${infoItem("Gather At", vm.event.gather.at)}
-          ${infoItem("Class", vm.event.busClass)}
-          ${infoItem("Drop Off At", vm.event.busTo)}
+          ${infoItem("Gather At", vm.event.gather.at, "desktop", d)}
+          ${infoItem("Class", bus.busClass, "desktop", d)}
+          ${infoItem("Drop Off At", bus.dropOffAt, "desktop", d)}
         </div>
         <div class="note-box">Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
       </div>
       <div class="info-col">
         <p class="section-title">Room information</p>
-        ${infoItem("Room Type", room.type)}
-        ${
-          room.roommate1
-            ? infoItem("Roommate Name", room.roommate1.name) +
-              infoItem("Roommate Contact", room.roommate1.phone)
-            : ""
-        }
+        ${infoItem("Room Type", room.type, "desktop", d)}
+        ${infoItem("Roommate", room.roommate1 ? room.roommate1.name : null, "desktop", d)}
+        ${infoItem("Roommate Contact", room.roommate1 ? room.roommate1.phone : null, "desktop", d)}
         ${
           room.roommate2
-            ? infoItem("Roommate Name (2nd night)", room.roommate2.name) +
-              infoItem("Roommate Contact", room.roommate2.phone)
+            ? infoItem("2nd Night Roommate", room.roommate2.name, "desktop", d) +
+              infoItem("Roommate Contact", room.roommate2.phone, "desktop", d)
             : ""
         }
       </div>
@@ -171,8 +179,8 @@ function travelCardMarkup(vm) {
 function flightTicketMarkup(vm) {
   const { flight, name } = vm;
   if (!flight) return "";
-  const d = flight.depart;
-  const r = flight.return;
+  const dep = flight.depart;
+  const ret = flight.return;
   return `
     <div class="ticket-band flight">
       <img class="band-logo" src="assets/surface1.svg" alt="Vietnam Airlines" />
@@ -182,23 +190,21 @@ function flightTicketMarkup(vm) {
     <div class="ticket-body">
       <div class="info-col">
         <p class="section-title">Departure</p>
-        <div class="info-row">${infoItem("From", d.from)}${infoItem("To", d.to)}</div>
-        <div class="info-row">${infoItem("Flight No.", d.flightNo)}${infoItem("Date", d.date)}</div>
-        <div class="info-row">${infoItem("Gather At", vm.event.gather.at)}${infoItem("Time", d.time)}</div>
-        <div class="info-row">${infoItem("Seat", d.seat)}${infoItem("Class", vm.event.flightClass)}</div>
+        <div class="info-row">${infoItem("From", dep.from)}${infoItem("To", dep.to)}</div>
+        <div class="info-row">${infoItem("Flight No.", dep.flightNo)}${infoItem("Date", dep.date)}</div>
+        <div class="info-row">${infoItem("Time", dep.time)}${infoItem("Class", vm.event.flightClass)}</div>
       </div>
       <div class="info-col">
         <p class="section-title">Return</p>
-        <div class="info-row">${infoItem("From", r.from)}${infoItem("To", r.to)}</div>
-        <div class="info-row">${infoItem("Flight No.", r.flightNo)}${infoItem("Date", r.date)}</div>
-        <div class="info-row">${infoItem("Gather At", vm.event.gather.at)}${infoItem("Time", r.time)}</div>
-        <div class="info-row">${infoItem("Seat", r.seat)}${infoItem("Class", vm.event.flightClass)}</div>
+        <div class="info-row">${infoItem("From", ret.from)}${infoItem("To", ret.to)}</div>
+        <div class="info-row">${infoItem("Flight No.", ret.flightNo)}${infoItem("Date", ret.date)}</div>
+        <div class="info-row">${infoItem("Time", ret.time)}${infoItem("Class", vm.event.flightClass)}</div>
       </div>
       <div class="info-col">
         ${infoItem("Name", name)}
         ${infoItem("Booking Number", flight.bookingNumber)}
-        <div class="info-row">${infoItem("Depart Flight No.", d.flightNo)}${infoItem("Depart Date", d.date)}</div>
-        <div class="info-row">${infoItem("Return Flight No.", r.flightNo)}${infoItem("Return Date", r.date)}</div>
+        <div class="info-row">${infoItem("Depart Flight No.", dep.flightNo)}${infoItem("Depart Date", dep.date)}</div>
+        <div class="info-row">${infoItem("Return Flight No.", ret.flightNo)}${infoItem("Return Date", ret.date)}</div>
       </div>
       <div class="note-box">Please show up at least 2 hours before flight time for check-in and baggage drop.</div>
     </div>
@@ -298,7 +304,8 @@ function swapTickets(deck) {
 // ---------------------------------------------------------------
 function renderMobileCard(vm) {
   const root = document.getElementById("mobile-card");
-  const { bus, room, flight, name, employeeCode, event } = vm;
+  const { bus, room, flight, name, event } = vm;
+  const dash = "mobile"; // size arg; dash mode passed explicitly below
 
   const flightBlock = flight
     ? `
@@ -314,46 +321,62 @@ function renderMobileCard(vm) {
         <div>${infoItem("Return · " + (flight.return.flightNo || ""), flight.return.date, "mobile")}</div>
         <div>${infoItem("Time", flight.return.time, "mobile")}</div>
       </div>
+      ${infoItem("Class", event.flightClass, "mobile")}
       <hr class="m-divider-solid" />
       <p class="m-section-title">Gather information</p>
       <div class="m-two-col">
-        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile")}</div>
-        <div>${infoItem("Date", event.gather.dateLabel, "mobile")}</div>
+        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile", "dash")}</div>
+        <div>${infoItem("Date", event.gather.dateLabel, "mobile", "dash")}</div>
       </div>
-      ${infoItem("Time", event.gather.time, "mobile")}
+      ${infoItem("Time", event.gather.time, "mobile", "dash")}
     </div>`
     : `
     <div class="mobile-card__body">
-      ${infoItem("Passenger", name, "mobile")}
-      ${employeeCode ? infoItem("Employee Code", employeeCode, "mobile") : ""}
+      ${infoItem("Passenger", name, "mobile", "dash")}
       <hr class="m-divider-solid" />
       <p class="m-section-title">Gather information</p>
       <div class="m-two-col">
-        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile")}</div>
-        <div>${infoItem("Date", event.gather.dateLabel, "mobile")}</div>
+        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile", "dash")}</div>
+        <div>${infoItem("Date", event.gather.dateLabel, "mobile", "dash")}</div>
       </div>
-      ${infoItem("Time", event.gather.time, "mobile")}
+      ${infoItem("Time", event.gather.time, "mobile", "dash")}
     </div>`;
 
   const busBlock = `
     <div class="mobile-card__body">
       <p class="m-section-title">Bus information</p>
-      ${infoItem("Depart Bus No.", bus.departNo, "mobile")}
-      ${infoItem("Bus Leader", bus.departLeaderName, "mobile")}
-      ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "mobile")}
+      ${infoItem("From", bus.from, "mobile", "dash")}
+      ${infoItem("To", bus.to, "mobile", "dash")}
+      <div class="m-two-col">
+        <div>${infoItem("Depart Bus No.", bus.departNo, "mobile", "dash")}</div>
+        <div>${infoItem("Seat No.", bus.departSeat, "mobile", "dash")}</div>
+      </div>
+      ${infoItem("Bus Leader", bus.departLeaderName, "mobile", "dash")}
+      ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "mobile", "dash")}
+      ${infoItem("Class", bus.busClass, "mobile", "dash")}
       <p style="font-size:12px;">Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
       <hr class="m-divider-dash" />
-      ${infoItem("Return Bus No.", bus.returnNo, "mobile")}
-      ${infoItem("Bus Leader", bus.returnLeaderName, "mobile")}
-      ${infoItem("Bus Leader Contact", bus.returnLeaderPhone, "mobile")}
+      <div class="m-two-col">
+        <div>${infoItem("Return Bus No.", bus.returnNo, "mobile", "dash")}</div>
+        <div>${infoItem("Seat No.", bus.returnSeat, "mobile", "dash")}</div>
+      </div>
+      ${infoItem("Bus Leader", bus.returnLeaderName, "mobile", "dash")}
+      ${infoItem("Bus Leader Contact", bus.returnLeaderPhone, "mobile", "dash")}
+      ${infoItem("Drop Off At", bus.dropOffAt, "mobile", "dash")}
     </div>`;
 
   const roomBlock = `
     <div class="mobile-card__body">
       <p class="m-section-title">Room information</p>
-      ${infoItem("Room Type", room.type, "mobile")}
-      ${room.roommate1 ? infoItem("Roommate", room.roommate1.name, "mobile") + infoItem("Roommate Contact", room.roommate1.phone, "mobile") : ""}
-      ${room.roommate2 ? infoItem("Roommate (2nd night)", room.roommate2.name, "mobile") + infoItem("Roommate Contact", room.roommate2.phone, "mobile") : ""}
+      ${infoItem("Room Type", room.type, "mobile", "dash")}
+      ${infoItem("Roommate", room.roommate1 ? room.roommate1.name : null, "mobile", "dash")}
+      ${infoItem("Roommate Contact", room.roommate1 ? room.roommate1.phone : null, "mobile", "dash")}
+      ${
+        room.roommate2
+          ? infoItem("2nd Night Roommate", room.roommate2.name, "mobile", "dash") +
+            infoItem("Roommate Contact", room.roommate2.phone, "mobile", "dash")
+          : ""
+      }
     </div>`;
 
   root.innerHTML = `
