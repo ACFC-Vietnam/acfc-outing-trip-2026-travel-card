@@ -141,20 +141,27 @@ function travelCardMarkup(vm) {
         ${infoItem("Carrier", "ACFC Outing Trip 2026", "desktop", d)}
         ${infoItem("Name", name, "desktop", d)}
         ${infoItem("From", bus.from, "desktop", d)}
+        <div class="note-box">
+          <p>Please show up at least 15 minutes before Departure Time.</p>
+          <p>Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
+        </div>
       </div>
       <div class="info-col">
         ${infoItem("Depart Bus No.", bus.departNo, "desktop", d)}
         ${infoItem("Seat No.", bus.departSeat, "desktop", d)}
         ${infoItem("Depart Date", vm.event.departDateLabel, "desktop", d)}
         ${infoItem("Depart Time", vm.event.gather.time, "desktop", d)}
+        ${infoItem("Bus Leader", bus.departLeaderName, "desktop", d)}
+        ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "desktop", d)}
       </div>
       <div class="info-col">
         ${infoItem("Return Bus No.", bus.returnNo, "desktop", d)}
         ${infoItem("Seat No.", bus.returnSeat, "desktop", d)}
         ${infoItem("Return Date", bus.returnDateLabel, "desktop", d)}
         ${infoItem("Gather Time", vm.event.returnGatherTime, "desktop", d)}
+        ${infoItem("Bus Leader", bus.returnLeaderName, "desktop", d)}
+        ${infoItem("Bus Leader Contact", bus.returnLeaderPhone, "desktop", d)}
       </div>
-      <div class="note-box">Please show up at least 15 minutes before Departure Time. Please note that your bus number is also your assigned table during lunch and gala dinner.</div>
       <div class="info-col info-col--room">
         <p class="section-title">Room information</p>
         ${infoItem("Room Type", room.type, "desktop", d)}
@@ -334,7 +341,7 @@ function renderMobileCard(vm) {
       <hr class="m-divider-solid" />
       <p class="m-section-title">Gather information</p>
       <div class="m-two-col">
-        <div>${infoItem("Gather At", `${event.gather.address}`, "mobile", "dash")}</div>
+        <div>${infoItem("Gather At", `${event.gather.at}<br><small>${event.gather.address}</small>`, "mobile", "dash")}</div>
         <div>${infoItem("Date", event.gather.dateLabel, "mobile", "dash")}</div>
       </div>
       ${infoItem("Time", event.gather.time, "mobile", "dash")}
@@ -352,7 +359,7 @@ function renderMobileCard(vm) {
       ${infoItem("Bus Leader", bus.departLeaderName, "mobile", "dash")}
       ${infoItem("Bus Leader Contact", bus.departLeaderPhone, "mobile", "dash")}
       ${infoItem("Class", bus.busClass, "mobile", "dash")}
-      <p style="font-size:12px;">Please show up at least 15 minutes before Departure Time. Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
+      <p style="font-size:12px;">Please note that this bus number is also your assigned table during lunch and gala dinner.</p>
       <hr class="m-divider-dash" />
       <div class="m-two-col">
         <div>${infoItem("Return Bus No.", bus.returnNo, "mobile", "dash")}</div>
