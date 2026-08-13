@@ -76,27 +76,24 @@ img { max-width: 100%; display: block; }
   margin: 0 auto;
   position: relative;
   box-shadow: 0 20px 60px rgba(88, 21, 21, 0.18);
-}
-
-/* The real ticket-shape artwork (rounded top, notched bottom corners)
-   stretches behind the hero + form as one continuous panel, exactly
-   like the desktop login mockup. Stretching a raster shape to fit a
-   variable-height form is an approximation — the notch curvature will
-   soften slightly on very tall/short viewports; flag if that reads
-   wrong on your monitor and we can switch to a 9-slice border-image. */
-.login-shell::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("../assets/travelcard-desktop-login-background.png");
-  background-size: 100% 100%;
-  z-index: 0;
+  /* 9-slice border-image: corners (radius ~180px) and bottom notches
+     (resolve within ~110px of the bottom edge) render at fixed pixel
+     scale; only the flat straight edges stretch/repeat to fit whatever
+     height the real form content needs. Measured directly off the PNG
+     (1200x878 source) so this should hold at any content height. */
+  border-style: solid;
+  border-width: 66px 66px 40px 66px;
+  border-image-source: url("../assets/travelcard-desktop-login-background.png");
+  border-image-slice: 180 180 110 180 fill;
+  border-image-width: 66px 66px 40px 66px;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
 }
 
 .login-hero {
   position: relative;
   z-index: 1;
-  padding: 56px 48px 40px;
+  padding: 0 0 24px;
   text-align: center;
 }
 .login-hero h1 {
@@ -138,7 +135,7 @@ img { max-width: 100%; display: block; }
 .login-form {
   position: relative;
   z-index: 1;
-  padding: 24px 48px 48px;
+  padding: 16px 8px 8px;
 }
 .login-form p.intro {
   font-family: var(--font-body);
@@ -189,15 +186,16 @@ img { max-width: 100%; display: block; }
 .cta-button:disabled { opacity: 0.6; cursor: progress; }
 
 .faq-tab {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
   position: relative;
   z-index: 1;
+  aspect-ratio: 400 / 85;
   background-image: url("../assets/faq-tab.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  text-align: center;
-  padding: 20px 16px 28px;
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 24px;
@@ -213,9 +211,8 @@ img { max-width: 100%; display: block; }
 .hero-image { width: 100%; height: auto; display: block; }
 
 @media (max-width: 768px) {
-  .login-shell::before { display: none; } /* the header image carries its own shape/border on mobile */
-  .login-hero { padding: 0; }
-  .login-form { padding: 24px 24px 32px; background: #dfe3ea; }
+  .login-shell { border-width: 44px 44px 28px 44px; border-image-width: 44px 44px 28px 44px; }
+  .login-form { padding: 12px 4px 4px; }
   .field input { border-radius: var(--radius-form-mobile); }
   .cta-button { font-size: var(--fs-cta-mobile); border-radius: var(--radius-form-mobile); }
 }
@@ -230,26 +227,26 @@ img { max-width: 100%; display: block; }
 }
 .ticket-deck {
   position: relative;
-  height: 640px; /* tall enough for the flight ticket to peek above */
+  display: grid;
 }
 
 .ticket {
-  position: absolute;
-  inset: 0;
-  top: 90px; /* resting: only the flight-ticket header band peeks out */
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
   background: var(--color-white);
   border-radius: 20px;
   box-shadow: 0 18px 40px rgba(88, 21, 21, 0.22);
   overflow: hidden;
   cursor: pointer;
-  transform-origin: 50% 100%;
+  transform: translateY(90px); /* resting: only the flight-ticket header band peeks out */
   transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15), box-shadow 0.3s ease;
   will-change: transform;
 }
 /* z-index + resting offsets are set inline by script.js per current front/back state */
 
-.ticket--front { top: 90px; z-index: 2; }
-.ticket--back { top: 0; z-index: 1; cursor: pointer; }
+.ticket--front { transform: translateY(90px); z-index: 2; }
+.ticket--back { transform: translateY(0); z-index: 1; cursor: pointer; }
 .ticket--back.is-hover { transform: translateY(-16px); } /* "off" -> "on": small rise, per keyframes */
 .ticket--swapping { transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s; }
 .ticket--swap-to-front { transform: translateY(90px); z-index: 3; }
@@ -264,12 +261,7 @@ img { max-width: 100%; display: block; }
   background-size: cover;
 }
 .ticket-band.flight { background: linear-gradient(120deg, #d99a1e, #e8b94a 45%, #b97f16); }
-.ticket-band .wordmark {
-  font-family: var(--font-display);
-  font-weight: 900;
-  color: var(--color-white);
-  font-size: 40px;
-}
+.ticket-band .band-logo { height: 28px; width: auto; }
 .ticket-band .title {
   font-family: var(--font-display);
   font-weight: 900;
@@ -278,7 +270,6 @@ img { max-width: 100%; display: block; }
   text-align: center;
   flex: 1;
 }
-.ticket-band .carrier-logo { color: #fff; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
 .ticket-body {
   display: grid;
@@ -344,7 +335,20 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
   box-shadow: 0 16px 40px rgba(88, 21, 21, 0.2);
 }
-.mobile-card__hero { line-height: 0; }
+.mobile-card__hero {
+  background-image: url("../assets/travelcard-desktop-login-background.png");
+  background-size: cover;
+  background-position: center;
+  padding: 40px 28px 56px;
+  text-align: center;
+}
+.mobile-card__hero h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  color: var(--color-white);
+  font-size: var(--fs-h1-mobile);
+  margin: 0 0 20px;
+}
 .mobile-card__body {
   background: var(--color-mobile-flap-1);
   padding: var(--space-mobile-frame-padding) 24px;
